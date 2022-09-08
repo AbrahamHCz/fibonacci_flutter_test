@@ -23,16 +23,6 @@ class _HomeState extends State<Home> {
     super.dispose();
   }
 
-  // int count = 0;
-
-  // int n = 8;
-
-  // int f = 0;
-
-  // int s = 1;
-
-  // int series = 0;
-
   // int one = 0;
   // int two = 0;
   // int three = 0;
@@ -43,7 +33,23 @@ class _HomeState extends State<Home> {
   // int eight = 0;
   // int nine = 0;
 
-  // void fibonacciSecuence() {
+  // List<List<int>> matrix = [
+  //   [1, 2, 3],
+  //   [1, 2, 3],
+  //   [1, 2, 3],
+  // ];
+
+  // int count = 0;
+
+  // int n = 8;
+
+  // int f = 0;
+
+  // int s = 1;
+
+  // int series = 0;
+
+  // fibonacciSecuence() {
   //   while (count <= n) {
   //     if (count <= 1) {
   //       print(count);
@@ -57,10 +63,13 @@ class _HomeState extends State<Home> {
   //   }
   // }
 
+  fibonacciSecuence() {
+    print("hola");
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height * 0.08;
-    List<int> numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -77,14 +86,61 @@ class _HomeState extends State<Home> {
               const SizedBox(
                 height: 45,
               ),
-              Wrap(
-                children: [
-                  for (int item in numbers)
-                    Container(
-                      height: 50,
-                      width: 100,
-                      child: Text(item.toString()),
-                    )
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text(
+                    "1",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                  ),
+                  Text(
+                    "2",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                  ),
+                  Text(
+                    "2",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text(
+                    "1",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                  ),
+                  Text(
+                    "2",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                  ),
+                  Text(
+                    "2",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text(
+                    "1",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                  ),
+                  Text(
+                    "2",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                  ),
+                  Text(
+                    "2",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                  ),
                 ],
               ),
               const SizedBox(
@@ -140,7 +196,21 @@ class _HomeState extends State<Home> {
                 width: 400,
                 height: 45,
                 child: ElevatedButton(
-                  onPressed: () => {},
+                  onPressed: () {
+                    if (inicialElement.toString().isNotEmpty) {
+                      fibonacciSecuence();
+                    } else {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("Error"),
+                              content:
+                                  Text("Por favor ingrese el elemento incial"),
+                            );
+                          });
+                    }
+                  },
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
