@@ -259,6 +259,8 @@ class _HomeState extends State<Home> {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                     ),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.grey),
                   ),
                   child: const Text("Rotar a la derecha"),
                 ),
@@ -279,6 +281,8 @@ class _HomeState extends State<Home> {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                     ),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.grey),
                   ),
                   child: const Text("Limpiar Matriz"),
                 ),
