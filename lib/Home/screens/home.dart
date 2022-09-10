@@ -1,6 +1,7 @@
+import 'dart:ffi';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:matrix2d/matrix2d.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -15,55 +16,34 @@ class _HomeState extends State<Home> {
 
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  String? one = '0';
-  String? two = '0';
-  String? three = '0';
-  String? four = '0';
-  String? five = '0';
-  String? six = '0';
-  String? seven = '0';
-  String? eight = '0';
-  String? nine = '0';
 
-  // int count = 0;
-  // int n = 8;
-  // int first = 0;
-  // int second = 1;
-  // int series = 0;
+  static List<int> generarSecuenciaFibo(int inicio, int maximo) {
+    List<int> secuenciaFibo = [];
 
-  List<List<int>> matrix = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9]
-  ];
+    int primerTermino = inicio;
+    int segundoTermino = numeroSiguienteFibo(inicio);
 
-  List<int> lista = [];
+    int siguienteTermino = primerTermino + segundoTermino;
+    secuenciaFibo.add(primerTermino);
 
-  int row = 2;
+    while (maximo >= siguienteTermino) {
+      secuenciaFibo.add(siguienteTermino);
 
-  int sum = 0;
+      primerTermino = segundoTermino;
+      segundoTermino = siguienteTermino;
+      siguienteTermino = primerTermino + segundoTermino;
+    }
 
-  generateMatrix() {
-    // while (int.parse(elementoFinal!) < 1000) {}
+    return secuenciaFibo;
+  }
 
-    print("hola");
-    // while (count <= n) {
-    //   if (count <= 1) {
-    //     print(count);
-    //   } else {
-    //     series = first + second;
-    //     first = second;
-    //     second = series;
-    //     print(series);
-    //   }
-    //   count += 1;
-    // }
+  static int numeroAnteriorDeFibo(int n) {
+    double a = n / ((1 + sqrt(5)) / 2.0);
   }
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height * 0.08;
-    matrix.clear();
 
     return Scaffold(
       key: _scaffoldKey,
@@ -87,40 +67,17 @@ class _HomeState extends State<Home> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    "$one",
+                    "0",
                     style: const TextStyle(
                         fontWeight: FontWeight.w600, fontSize: 18),
                   ),
                   Text(
-                    "$two",
+                    "0",
                     style: const TextStyle(
                         fontWeight: FontWeight.w600, fontSize: 18),
                   ),
                   Text(
-                    "$three",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600, fontSize: 18),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                    "$four",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600, fontSize: 18),
-                  ),
-                  Text(
-                    "$five",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600, fontSize: 18),
-                  ),
-                  Text(
-                    "$six",
+                    "0",
                     style: const TextStyle(
                         fontWeight: FontWeight.w600, fontSize: 18),
                   ),
@@ -133,17 +90,40 @@ class _HomeState extends State<Home> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    "$seven",
+                    "0",
                     style: const TextStyle(
                         fontWeight: FontWeight.w600, fontSize: 18),
                   ),
                   Text(
-                    "$eight",
+                    "0",
                     style: const TextStyle(
                         fontWeight: FontWeight.w600, fontSize: 18),
                   ),
                   Text(
-                    "$nine",
+                    "0",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w600, fontSize: 18),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    "0",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w600, fontSize: 18),
+                  ),
+                  Text(
+                    "0",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w600, fontSize: 18),
+                  ),
+                  Text(
+                    "0",
                     style: const TextStyle(
                         fontWeight: FontWeight.w600, fontSize: 18),
                   ),
@@ -227,9 +207,7 @@ class _HomeState extends State<Home> {
                       height: 45,
                       child: ElevatedButton(
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            generateMatrix();
-                          }
+                          if (_formKey.currentState!.validate()) {}
                         },
                         style: ButtonStyle(
                           shape:
