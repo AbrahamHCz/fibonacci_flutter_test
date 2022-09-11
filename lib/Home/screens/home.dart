@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,14 +10,15 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String? elementoInicial;
-  String? elementoFinal;
+  dynamic elementoInicial;
+  dynamic elementoFinal;
+  List<int>? secuenciaFibo = [];
 
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   static List<int> generarSecuenciaFibo(int inicio, int maximo) {
-    List<int> secuenciaFibo = [];
+    List<int>? secuenciaFibo = [];
 
     int primerTermino = inicio;
     int segundoTermino = numeroSiguienteFibo(inicio);
@@ -39,6 +39,123 @@ class _HomeState extends State<Home> {
 
   static int numeroAnteriorDeFibo(int n) {
     double a = n / ((1 + sqrt(5)) / 2.0);
+    return (a.round());
+  }
+
+  static int numeroSiguienteFibo(int n) {
+    double a = n * (1 + sqrt(5)) / 2.0;
+    return (a.round());
+  }
+
+  static bool esCuadradoPerfecto(int x) {
+    int s = sqrt(x).toInt();
+    return (s * s == x);
+  }
+
+  static bool esNumeroFibonacci(int n) {
+    return esCuadradoPerfecto(5 * n * n + 4) ||
+        esCuadradoPerfecto(5 * n * n - 4);
+  }
+
+  // matriz 3x3 servira para tomar los datos de la matriz 3x3 grafica
+  List<List<int>>? matrizFibonacci;
+  generarMatriz() {
+    List<int>? secuenciaFibo = [];
+    // retorna true si el numero digitado pertenece a un termino de la secuencia
+    // fibo
+    bool encontroNumeroFibo = false;
+
+    encontroNumeroFibo = esNumeroFibonacci(int.parse(elementoInicial));
+
+    int primerTermino = 0;
+    int segundoTermino = 1;
+    int siguienteTermino = 0;
+
+    if (encontroNumeroFibo) {
+      // numero digitado SI pertenece a un termino de la secuancia fibo, empezara
+      // desde este
+      secuenciaFibo = generarSecuenciaFibo(
+          int.parse(elementoInicial), int.parse(elementoFinal));
+    } else {
+      // numero introducido no es un termino de la secuencia fibo, se encuentra el
+      // siguiente mayor que si es termino
+      // entra al bucle si el numero digitado no es un termino de la secuencia fibo
+      bool encontroTermino = false;
+      int numeroFiboEncontrado = 0;
+
+      while (!encontroTermino) {
+        if (siguienteTermino >= int.parse(elementoInicial)) {
+          numeroFiboEncontrado = siguienteTermino;
+          encontroTermino = true;
+        } else {
+          siguienteTermino = primerTermino + segundoTermino;
+          primerTermino = segundoTermino;
+          segundoTermino = siguienteTermino;
+        }
+      }
+
+      secuenciaFibo =
+          generarSecuenciaFibo(numeroFiboEncontrado, int.parse(elementoFinal));
+    }
+
+    print(
+        "SE GENERO LA SIGUIENTE SECUENCIA EN BASE A LOS PARAMETROS $elementoInicial y $elementoFinal");
+    print(secuenciaFibo.toString());
+
+    // si el numero de terminos encontrados en la secuencia es mayor al limite de la
+    // matriz 3x3, mostrar error
+    if (secuenciaFibo.length > 9) {
+      print("NUMERO DE TERMINOS EXCEDE CAPACIDAD DE LA MATRIZ...");
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(
+              "Error!",
+              textAlign: TextAlign.center,
+            ),
+            content: const Text(
+              "El numero de terminos excede la capacidad de la matriz. Se tomara hasta el elemento 9no",
+              textAlign: TextAlign.center,
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text("Continuar"),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    int contadorPosicion = 0;
+
+    // bucle recorre las filas 1 por 1
+    for (int fila = 0; fila < 3; fila++) {
+      // bucle para recorrer las columnas
+      for (int columna = 0; columna < 3; columna++) {
+        if (contadorPosicion >= secuenciaFibo.length) {
+          // el numero de elementos de la secuencia no llena la matriz
+          // se omite
+          continue;
+        } else {
+          // se ingresa el sprimer termino
+          matrizFibonacci?[fila][columna] = secuenciaFibo[contadorPosicion];
+          // se suma el contador para llevar control de posiciones ya tomadas
+          contadorPosicion++;
+        }
+      }
+    }
+
+    print("MATRIZ GENERADA:");
+    for (int i = 0; i < matrizFibonacci!.length; i++) {
+      for (int j = 0; j < matrizFibonacci![i].length; j++) {
+        print(matrizFibonacci![i][j]);
+      }
+    }
   }
 
   @override
@@ -207,7 +324,9 @@ class _HomeState extends State<Home> {
                       height: 45,
                       child: ElevatedButton(
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {}
+                          if (_formKey.currentState!.validate()) {
+                            generarMatriz();
+                          }
                         },
                         style: ButtonStyle(
                           shape:
@@ -230,15 +349,19 @@ class _HomeState extends State<Home> {
                 width: 300,
                 height: 45,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (matrizFibonacci!.isEmpty) {
+                      Null;
+                    }
+                  },
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                     ),
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.grey),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        matrizFibonacci!.isEmpty ? Colors.grey : Colors.blue),
                   ),
                   child: const Text("Rotar a la derecha"),
                 ),
@@ -259,8 +382,8 @@ class _HomeState extends State<Home> {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                     ),
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.grey),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        matrizFibonacci!.isEmpty ? Colors.grey : Colors.blue),
                   ),
                   child: const Text("Limpiar Matriz"),
                 ),

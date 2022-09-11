@@ -13,7 +13,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Fibonacci Matrix, Focus',
-      theme: ThemeData(scaffoldBackgroundColor: Colors.white),
+      theme: ThemeData(
+          scaffoldBackgroundColor: Colors.white, primaryColor: Colors.blue),
       initialRoute: '/home',
       routes: {'/home': (context) => Home()},
     );
