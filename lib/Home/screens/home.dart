@@ -132,7 +132,8 @@ class _HomeState extends State<Home> {
                             keyboardType: TextInputType.number,
                             validator: (elementoInicialValue) {
                               if (elementoInicialValue == null ||
-                                  elementoInicialValue.isEmpty) {
+                                  elementoInicialValue.isEmpty ||
+                                  elementoInicialValue == "0") {
                                 return '*Ingresar...';
                               }
                               elementoInicial = elementoInicialValue;
@@ -158,7 +159,8 @@ class _HomeState extends State<Home> {
                             keyboardType: TextInputType.number,
                             validator: (elementoFinalValue) {
                               if (elementoFinalValue == null ||
-                                  elementoFinalValue.isEmpty) {
+                                  elementoFinalValue.isEmpty ||
+                                  elementoFinalValue == "0") {
                                 return '*Ingresar...';
                               }
                               elementoFinal = elementoFinalValue;
@@ -175,11 +177,13 @@ class _HomeState extends State<Home> {
                       width: 300,
                       height: 45,
                       child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            generarMatriz();
-                          }
-                        },
+                        onPressed: suma == 0
+                            ? () {
+                                if (_formKey.currentState!.validate()) {
+                                  generarMatriz();
+                                }
+                              }
+                            : null,
                         style: ButtonStyle(
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -201,11 +205,11 @@ class _HomeState extends State<Home> {
                 width: 300,
                 height: 45,
                 child: ElevatedButton(
-                  onPressed: () {
-                    if (matrizFibonacci!.isEmpty) {
-                      Null;
-                    }
-                  },
+                  onPressed: suma != 0
+                      ? () {
+                          rotateMatrix();
+                        }
+                      : null,
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
@@ -285,7 +289,7 @@ class _HomeState extends State<Home> {
     secuenciaFibo.add(primerTermino);
 
     while (maximo >= siguienteTermino) {
-      secuenciaFibo.add(siguienteTermino);
+      secuenciaFibo.add(segundoTermino);
 
       primerTermino = segundoTermino;
       segundoTermino = siguienteTermino;
@@ -314,6 +318,8 @@ class _HomeState extends State<Home> {
     return esCuadradoPerfecto(5 * n * n + 4) ||
         esCuadradoPerfecto(5 * n * n - 4);
   }
+
+  List<List<int>> matriz = List.generate(3, (index) => [], growable: true);
 
   generarMatriz() {
     setState(
@@ -362,7 +368,7 @@ class _HomeState extends State<Home> {
 
         // si el numero de terminos encontrados en la secuencia es mayor al limite de la
         // matriz 3x3, mostrar error
-        if (secuenciaFibo.length > 9) {
+        if (secuenciaFibo.length > 9 || secuenciaFibo.length < 9) {
           print("NUMERO DE TERMINOS EXCEDE CAPACIDAD DE LA MATRIZ...");
           showDialog(
             context: context,
@@ -373,7 +379,7 @@ class _HomeState extends State<Home> {
                   textAlign: TextAlign.center,
                 ),
                 content: const Text(
-                  "El numero de terminos excede la capacidad de la matriz",
+                  "El numero de terminos excede o es menor a la capacidad total de la matriz",
                   textAlign: TextAlign.center,
                 ),
                 actions: [
@@ -390,8 +396,6 @@ class _HomeState extends State<Home> {
         } else {
           int conta = 0;
 
-          List<List<int>> matriz =
-              List.generate(3, (index) => [], growable: true);
           for (int fila = 0; fila < 3; fila++) {
             for (int columna = 0; columna < 3; columna++) {
               if (conta < secuenciaFibo.length) {
@@ -430,5 +434,39 @@ class _HomeState extends State<Home> {
         }
       },
     );
+  }
+
+  static void rotarMatriz(List<List<int>>? a) {
+    for (int i = 0; i < a!.length / 2; i++) {
+      for (int j = i; j < a[i].length - i - 1; j++) {
+        int temp = a[i][j];
+        a[i][j] = a[a.length - 1 - j][i];
+        a[a.length - 1 - j][i] = a[a.length - 1 - i][a.length - 1 - j];
+        a[a.length - 1 - i][a.length - 1 - j] = a[j][a.length - 1 - i];
+        a[j][a.length - 1 - i] = temp;
+      }
+    }
+  }
+
+  rotateMatrix() {
+    setState(() {
+      rotarMatriz(matrizFibonacci);
+      for (int j = 0; j < matrizFibonacci!.length; j++) {}
+      print("SE GENERO LA SIGUIENTE MATRIZ ROTADA");
+      print(matriz);
+
+      one = matrizFibonacci![0][0];
+      two = matrizFibonacci![0][1];
+      three = matrizFibonacci![0][2];
+      four = matrizFibonacci![1][0];
+      five = matrizFibonacci![1][1];
+      six = matrizFibonacci![1][2];
+      seven = matrizFibonacci![2][0];
+      eight = matrizFibonacci![2][1];
+      nine = matrizFibonacci![2][2];
+
+      suma =
+          one! + two! + three! + four! + five! + six! + seven! + eight! + nine!;
+    });
   }
 }
