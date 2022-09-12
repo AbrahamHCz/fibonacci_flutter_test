@@ -10,154 +10,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  dynamic elementoInicial;
-  dynamic elementoFinal;
-  List<int>? secuenciaFibo = [];
-
-  final _formKey = GlobalKey<FormState>();
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  static List<int> generarSecuenciaFibo(int inicio, int maximo) {
-    List<int>? secuenciaFibo = [];
-
-    int primerTermino = inicio;
-    int segundoTermino = numeroSiguienteFibo(inicio);
-
-    int siguienteTermino = primerTermino + segundoTermino;
-    secuenciaFibo.add(primerTermino);
-
-    while (maximo >= siguienteTermino) {
-      secuenciaFibo.add(siguienteTermino);
-
-      primerTermino = segundoTermino;
-      segundoTermino = siguienteTermino;
-      siguienteTermino = primerTermino + segundoTermino;
-    }
-
-    return secuenciaFibo;
-  }
-
-  static int numeroAnteriorDeFibo(int n) {
-    double a = n / ((1 + sqrt(5)) / 2.0);
-    return (a.round());
-  }
-
-  static int numeroSiguienteFibo(int n) {
-    double a = n * (1 + sqrt(5)) / 2.0;
-    return (a.round());
-  }
-
-  static bool esCuadradoPerfecto(int x) {
-    int s = sqrt(x).toInt();
-    return (s * s == x);
-  }
-
-  static bool esNumeroFibonacci(int n) {
-    return esCuadradoPerfecto(5 * n * n + 4) ||
-        esCuadradoPerfecto(5 * n * n - 4);
-  }
-
-  // matriz 3x3 servira para tomar los datos de la matriz 3x3 grafica
-  List<List<int>>? matrizFibonacci;
-  generarMatriz() {
-    List<int>? secuenciaFibo = [];
-    // retorna true si el numero digitado pertenece a un termino de la secuencia
-    // fibo
-    bool encontroNumeroFibo = false;
-
-    encontroNumeroFibo = esNumeroFibonacci(int.parse(elementoInicial));
-
-    int primerTermino = 0;
-    int segundoTermino = 1;
-    int siguienteTermino = 0;
-
-    if (encontroNumeroFibo) {
-      // numero digitado SI pertenece a un termino de la secuancia fibo, empezara
-      // desde este
-      secuenciaFibo = generarSecuenciaFibo(
-          int.parse(elementoInicial), int.parse(elementoFinal));
-    } else {
-      // numero introducido no es un termino de la secuencia fibo, se encuentra el
-      // siguiente mayor que si es termino
-      // entra al bucle si el numero digitado no es un termino de la secuencia fibo
-      bool encontroTermino = false;
-      int numeroFiboEncontrado = 0;
-
-      while (!encontroTermino) {
-        if (siguienteTermino >= int.parse(elementoInicial)) {
-          numeroFiboEncontrado = siguienteTermino;
-          encontroTermino = true;
-        } else {
-          siguienteTermino = primerTermino + segundoTermino;
-          primerTermino = segundoTermino;
-          segundoTermino = siguienteTermino;
-        }
-      }
-
-      secuenciaFibo =
-          generarSecuenciaFibo(numeroFiboEncontrado, int.parse(elementoFinal));
-    }
-
-    print(
-        "SE GENERO LA SIGUIENTE SECUENCIA EN BASE A LOS PARAMETROS $elementoInicial y $elementoFinal");
-    print(secuenciaFibo.toString());
-
-    // si el numero de terminos encontrados en la secuencia es mayor al limite de la
-    // matriz 3x3, mostrar error
-    if (secuenciaFibo.length > 9) {
-      print("NUMERO DE TERMINOS EXCEDE CAPACIDAD DE LA MATRIZ...");
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text(
-              "Error!",
-              textAlign: TextAlign.center,
-            ),
-            content: const Text(
-              "El numero de terminos excede la capacidad de la matriz. Se tomara hasta el elemento 9no",
-              textAlign: TextAlign.center,
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Continuar"),
-              ),
-            ],
-          );
-        },
-      );
-    }
-
-    int contadorPosicion = 0;
-
-    // bucle recorre las filas 1 por 1
-    for (int fila = 0; fila < 3; fila++) {
-      // bucle para recorrer las columnas
-      for (int columna = 0; columna < 3; columna++) {
-        if (contadorPosicion >= secuenciaFibo.length) {
-          // el numero de elementos de la secuencia no llena la matriz
-          // se omite
-          continue;
-        } else {
-          // se ingresa el sprimer termino
-          matrizFibonacci?[fila][columna] = secuenciaFibo[contadorPosicion];
-          // se suma el contador para llevar control de posiciones ya tomadas
-          contadorPosicion++;
-        }
-      }
-    }
-
-    print("MATRIZ GENERADA:");
-    for (int i = 0; i < matrizFibonacci!.length; i++) {
-      for (int j = 0; j < matrizFibonacci![i].length; j++) {
-        print(matrizFibonacci![i][j]);
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height * 0.08;
@@ -184,17 +36,17 @@ class _HomeState extends State<Home> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    "0",
+                    "$one",
                     style: const TextStyle(
                         fontWeight: FontWeight.w600, fontSize: 18),
                   ),
                   Text(
-                    "0",
+                    "$two",
                     style: const TextStyle(
                         fontWeight: FontWeight.w600, fontSize: 18),
                   ),
                   Text(
-                    "0",
+                    "$three",
                     style: const TextStyle(
                         fontWeight: FontWeight.w600, fontSize: 18),
                   ),
@@ -207,17 +59,17 @@ class _HomeState extends State<Home> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    "0",
+                    "$four",
                     style: const TextStyle(
                         fontWeight: FontWeight.w600, fontSize: 18),
                   ),
                   Text(
-                    "0",
+                    "$five",
                     style: const TextStyle(
                         fontWeight: FontWeight.w600, fontSize: 18),
                   ),
                   Text(
-                    "0",
+                    "$six",
                     style: const TextStyle(
                         fontWeight: FontWeight.w600, fontSize: 18),
                   ),
@@ -230,17 +82,17 @@ class _HomeState extends State<Home> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    "0",
+                    "$seven",
                     style: const TextStyle(
                         fontWeight: FontWeight.w600, fontSize: 18),
                   ),
                   Text(
-                    "0",
+                    "$eight",
                     style: const TextStyle(
                         fontWeight: FontWeight.w600, fontSize: 18),
                   ),
                   Text(
-                    "0",
+                    "$nine",
                     style: const TextStyle(
                         fontWeight: FontWeight.w600, fontSize: 18),
                   ),
@@ -249,9 +101,9 @@ class _HomeState extends State<Home> {
               const SizedBox(
                 height: 50,
               ),
-              const Text(
-                "Suma de matriz: ",
-                style: TextStyle(fontSize: 16),
+              Text(
+                "Suma de matriz: $suma",
+                style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(
                 height: 45,
@@ -361,7 +213,8 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     backgroundColor: MaterialStateProperty.all<Color>(
-                        matrizFibonacci!.isEmpty ? Colors.grey : Colors.blue),
+                      suma == 0 ? Colors.grey : Colors.blue,
+                    ),
                   ),
                   child: const Text("Rotar a la derecha"),
                 ),
@@ -383,7 +236,9 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     backgroundColor: MaterialStateProperty.all<Color>(
-                        matrizFibonacci!.isEmpty ? Colors.grey : Colors.blue),
+                      elementoInicial == null ? Colors.grey : Colors.blue,
+                      // matrizFibonacci!.isEmpty ? Colors.grey : Colors.blue,
+                    ),
                   ),
                   child: const Text("Limpiar Matriz"),
                 ),
@@ -395,6 +250,185 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
+    );
+  }
+
+  dynamic elementoInicial;
+  dynamic elementoFinal;
+  List<int>? secuenciaFibo = [];
+  // matriz 3x3 servira para tomar los datos de la matriz 3x3 grafica
+  List<List<int>>? matrizFibonacci =
+      List.generate(3, (index) => [], growable: true);
+
+  int? one = 0;
+  int? two = 0;
+  int? three = 0;
+  int? four = 0;
+  int? five = 0;
+  int? six = 0;
+  int? seven = 0;
+  int? eight = 0;
+  int? nine = 0;
+
+  int? suma = 0;
+
+  final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  static List<int> generarSecuenciaFibo(int inicio, int maximo) {
+    List<int>? secuenciaFibo = [];
+
+    int primerTermino = inicio;
+    int segundoTermino = numeroSiguienteFibo(inicio);
+
+    int siguienteTermino = primerTermino + segundoTermino;
+    secuenciaFibo.add(primerTermino);
+
+    while (maximo >= siguienteTermino) {
+      secuenciaFibo.add(siguienteTermino);
+
+      primerTermino = segundoTermino;
+      segundoTermino = siguienteTermino;
+      siguienteTermino = primerTermino + segundoTermino;
+    }
+
+    return secuenciaFibo;
+  }
+
+  static int numeroAnteriorDeFibo(int n) {
+    double a = n / ((1 + sqrt(5)) / 2.0);
+    return (a.round());
+  }
+
+  static int numeroSiguienteFibo(int n) {
+    double a = n * (1 + sqrt(5)) / 2.0;
+    return (a.round());
+  }
+
+  static bool esCuadradoPerfecto(int x) {
+    int s = sqrt(x).toInt();
+    return (s * s == x);
+  }
+
+  static bool esNumeroFibonacci(int n) {
+    return esCuadradoPerfecto(5 * n * n + 4) ||
+        esCuadradoPerfecto(5 * n * n - 4);
+  }
+
+  generarMatriz() {
+    setState(
+      () {
+        List<int>? secuenciaFibo = [];
+        // retorna true si el numero digitado pertenece a un termino de la secuencia
+        // fibo
+        bool encontroNumeroFibo = false;
+
+        encontroNumeroFibo = esNumeroFibonacci(int.parse(elementoInicial));
+
+        int primerTermino = 0;
+        int segundoTermino = 1;
+        int siguienteTermino = 0;
+
+        if (encontroNumeroFibo) {
+          // numero digitado SI pertenece a un termino de la secuancia fibo, empezara
+          // desde este
+          secuenciaFibo = generarSecuenciaFibo(
+              int.parse(elementoInicial), int.parse(elementoFinal));
+        } else {
+          // numero introducido no es un termino de la secuencia fibo, se encuentra el
+          // siguiente mayor que si es termino
+          // entra al bucle si el numero digitado no es un termino de la secuencia fibo
+          bool encontroTermino = false;
+          int numeroFiboEncontrado = 0;
+
+          while (!encontroTermino) {
+            if (siguienteTermino >= int.parse(elementoInicial)) {
+              numeroFiboEncontrado = siguienteTermino;
+              encontroTermino = true;
+            } else {
+              siguienteTermino = primerTermino + segundoTermino;
+              primerTermino = segundoTermino;
+              segundoTermino = siguienteTermino;
+            }
+          }
+
+          secuenciaFibo = generarSecuenciaFibo(
+              numeroFiboEncontrado, int.parse(elementoFinal));
+        }
+
+        print(
+            "SE GENERO LA SIGUIENTE SECUENCIA EN BASE A LOS PARAMETROS $elementoInicial y $elementoFinal");
+        print(secuenciaFibo.toString());
+
+        // si el numero de terminos encontrados en la secuencia es mayor al limite de la
+        // matriz 3x3, mostrar error
+        if (secuenciaFibo.length > 9) {
+          print("NUMERO DE TERMINOS EXCEDE CAPACIDAD DE LA MATRIZ...");
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text(
+                  "Error!",
+                  textAlign: TextAlign.center,
+                ),
+                content: const Text(
+                  "El numero de terminos excede la capacidad de la matriz",
+                  textAlign: TextAlign.center,
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("Continuar"),
+                  ),
+                ],
+              );
+            },
+          );
+        } else {
+          int conta = 0;
+
+          List<List<int>> matriz =
+              List.generate(3, (index) => [], growable: true);
+          for (int fila = 0; fila < 3; fila++) {
+            for (int columna = 0; columna < 3; columna++) {
+              if (conta < secuenciaFibo.length) {
+                matriz[fila].add(secuenciaFibo[conta]);
+
+                conta++;
+                // matriz[columna].add(secuenciaFibo[conta]);
+              }
+            }
+          }
+          matrizFibonacci = matriz;
+
+          for (int j = 0; j < matrizFibonacci!.length; j++) {}
+          print("SE GENERO LA SIGUIENTE MATRIZ");
+          print(matriz);
+
+          one = matrizFibonacci![0][0];
+          two = matrizFibonacci![0][1];
+          three = matrizFibonacci![0][2];
+          four = matrizFibonacci![1][0];
+          five = matrizFibonacci![1][1];
+          six = matrizFibonacci![1][2];
+          seven = matrizFibonacci![2][0];
+          eight = matrizFibonacci![2][1];
+          nine = matrizFibonacci![2][2];
+
+          suma = one! +
+              two! +
+              three! +
+              four! +
+              five! +
+              six! +
+              seven! +
+              eight! +
+              nine!;
+        }
+      },
     );
   }
 }
