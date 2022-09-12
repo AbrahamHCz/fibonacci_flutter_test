@@ -288,7 +288,7 @@ class _HomeState extends State<Home> {
     int siguienteTermino = primerTermino + segundoTermino;
     secuenciaFibo.add(primerTermino);
 
-    while (maximo >= siguienteTermino) {
+    while (maximo >= segundoTermino) {
       secuenciaFibo.add(segundoTermino);
 
       primerTermino = segundoTermino;
