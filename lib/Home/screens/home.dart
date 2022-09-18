@@ -160,7 +160,8 @@ class _HomeState extends State<Home> {
                             validator: (elementoFinalValue) {
                               if (elementoFinalValue == null ||
                                   elementoFinalValue.isEmpty ||
-                                  elementoFinalValue == "0") {
+                                  elementoFinalValue == "0" ||
+                                  elementoFinalValue == elementoInicial) {
                                 return '*Ingresar...';
                               }
                               elementoFinal = elementoFinalValue;
