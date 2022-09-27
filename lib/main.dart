@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           scaffoldBackgroundColor: Colors.white, primaryColor: Colors.blue),
       initialRoute: '/home',
-      routes: {'/home': (context) => Home()},
+      routes: {'/home': (context) => const Home()},
     );
   }
 }

@@ -13,6 +13,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height * 0.08;
+    double width = MediaQuery.of(context).size.width * 0.08;
 
     return Scaffold(
       key: _scaffoldKey,
@@ -112,11 +113,8 @@ class _HomeState extends State<Home> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    Row(
+                    Column(
                       children: [
-                        const SizedBox(
-                          width: 20,
-                        ),
                         const Text(
                           "Elemento inicial: ",
                           style: TextStyle(
@@ -124,8 +122,9 @@ class _HomeState extends State<Home> {
                         ),
                         SizedBox(
                           height: 60,
-                          width: 40,
+                          width: 275,
                           child: TextFormField(
+                            textAlign: TextAlign.center,
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.digitsOnly,
                             ],
@@ -134,15 +133,12 @@ class _HomeState extends State<Home> {
                               if (elementoInicialValue == null ||
                                   elementoInicialValue.isEmpty ||
                                   elementoInicialValue == "0") {
-                                return '*Ingresar...';
+                                return 'Por favor ingrese un valor mayor o igual a 1';
                               }
                               elementoInicial = elementoInicialValue;
                               return null;
                             },
                           ),
-                        ),
-                        const SizedBox(
-                          width: 45,
                         ),
                         const Text(
                           "Elemento final: ",
@@ -151,8 +147,9 @@ class _HomeState extends State<Home> {
                         ),
                         SizedBox(
                           height: 60,
-                          width: 40,
+                          width: 275,
                           child: TextFormField(
+                            textAlign: TextAlign.center,
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.digitsOnly,
                             ],
@@ -160,9 +157,10 @@ class _HomeState extends State<Home> {
                             validator: (elementoFinalValue) {
                               if (elementoFinalValue == null ||
                                   elementoFinalValue.isEmpty ||
-                                  elementoFinalValue == "0" ||
-                                  elementoFinalValue == elementoInicial) {
-                                return '*Ingresar...';
+                                  elementoFinalValue == "0") {
+                                return 'Por favor ingrese un valor mayor o igual a 1';
+                              } else if (elementoFinalValue == elementoFinal) {
+                                return 'Por favor ingrese un valor diferente al valor inicial';
                               }
                               elementoFinal = elementoFinalValue;
                               return null;
